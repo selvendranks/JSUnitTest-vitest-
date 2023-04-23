@@ -1,4 +1,6 @@
-import { extractNumbers } from './src/parser.js';
+import { extractformData } from './src/parser.js';
+import { cleanNumbers } from './src/util/numbers.js';
+
 import {
   validateStringNotEmpty,
   validateNumber,
@@ -11,25 +13,19 @@ const output = document.getElementById('result');
 
 function formSubmitHandler(event) {
   event.preventDefault();
-  const formData = new FormData(form);
-  const numberInputs = extractNumbers(formData);
+  const numberInputs = extractformData();
 
   let result = '';
   
   try {
-    const numbers = [];
-    for (const numberInput of numberInputs) {
-      validateStringNotEmpty(numberInput);
-      const number = transformToNumber(numberInput);
-      validateNumber(number);
-      numbers.push(number);
-    }
-    result = add(numbers).toString();
+
+    result = cleanNumbers(numberInputs).toString()
+    
   } catch (error) {
     result = error.message;
   }
 
-  let resultText = '';
+  
 
   if (result === 'invalid') {
     resultText = 'Invalid input. You must enter valid numbers.';
